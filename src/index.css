@@ -1,0 +1,32 @@
+/* Import component and page styles */
+@import './styles/components.css';
+@import './styles/pages.css';
+
+/* A good place for global styles and resets */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f5; /* A light neutral background */
+  color: #18181b; /* Default text color */
+}
+
+/* The main container for our application content */
+.app-container {
+  max-width: 1024px; /* A common max-width for content */
+  margin: 0 auto;    /* This centers the container horizontally */
+  padding: 1rem 2rem; /* Vertical and horizontal padding */
+  width: 100%;
+  min-height: 100vh; /* Ensure it takes at least the full viewport height */
+  box-sizing: border-box; /* Ensures padding is included in the total width/height */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem; /* Reduce padding on mobile */
+  }
+}

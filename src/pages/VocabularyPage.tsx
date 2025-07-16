@@ -17,6 +17,8 @@ type EditFields = {
  */
 export const VocabularyPage: React.FC = () => {
   const { vocabulary, updateWord } = useVocabulary();
+  const { deleteWord } = useVocabulary();
+
   // State to keep track of the currently selected entry for context review
   const [selectedEntry, setSelectedEntry] = useState<VocabularyEntry | null>(null);
   const [filterTag, setFilterTag] = useState<string | null>(null);
@@ -61,6 +63,15 @@ export const VocabularyPage: React.FC = () => {
         context: selectedEntry.context,
         tags: (selectedEntry.tags || []).join(', '),
       });
+    }
+  };
+
+    const handleVocabularyDelete = async() => {
+    if (selectedEntry) {
+      await deleteWord(selectedEntry.id)
+    setSelectedEntry(null);
+    setIsEditing(false);
+
     }
   };
 
@@ -204,6 +215,9 @@ export const VocabularyPage: React.FC = () => {
                   )}
                   <div style={{ marginTop: '1rem' }}>
                     <button className="auth-submit-btn" onClick={handleEdit}>Edit</button>
+                  </div>
+                  <div style={{ marginTop: '1rem' }}>
+                    <button className="auth-submit-btn" onClick={handleVocabularyDelete}>Delete</button>
                   </div>
                 </>
               )}

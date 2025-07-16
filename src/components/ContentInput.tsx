@@ -12,7 +12,6 @@ export const ContentInput: React.FC<ContentInputProps> = ({ onProcessContent, va
     e.preventDefault();
     if (value.trim()) {
       onProcessContent(value);
-      onChange(''); // Notify parent to clear the content
     }
   };
 

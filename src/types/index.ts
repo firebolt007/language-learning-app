@@ -12,3 +12,11 @@ export interface VocabularyEntry {
   tags?: string[]; // List of tags for categorization, can be user-defined or LLM-generated.
                    // Supports a hierarchical structure, e.g., 'topic#subtopic'.
 }
+
+export interface Article {
+  id: string; // unique (e.g. uuid or normalized title)
+  title: string;
+  content: string;
+  createdAt: number;
+  updatedAt: number;
+}

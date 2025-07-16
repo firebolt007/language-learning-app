@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 
-interface ContentInputProps {
+export interface ContentInputProps {
   onProcessContent: (content: string) => void;
+  value: string;
+  onChange: (val: string) => void;
+  mode?: 'text' | 'audio' | 'video';
 }
 
-export const ContentInput: React.FC<ContentInputProps> = ({ onProcessContent }) => {
-  const [content, setContent] = useState('');
-
+export const ContentInput: React.FC<ContentInputProps> = ({ onProcessContent, value, onChange }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (content.trim()) {
-      onProcessContent(content);
-      setContent('');
+    if (value.trim()) {
+      onProcessContent(value);
+      onChange(''); // Notify parent to clear the content
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="content-input-form">
       <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="Paste your content here..."
         required
         className="content-input-textarea"
@@ -27,4 +28,5 @@ export const ContentInput: React.FC<ContentInputProps> = ({ onProcessContent }) 
       <button type="submit" className="content-input-submit-btn">Process Content</button>
     </form>
   );
+
 };

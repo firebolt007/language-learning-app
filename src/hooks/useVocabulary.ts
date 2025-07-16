@@ -47,7 +47,15 @@ export const useVocabulary = () => {
             context: data.context,
             explanation: data.explanation,
             translation: data.translation,
-            addedAt: data.addedAt?.toMillis() || Date.now(),
+            addedAt: 
+            //  data.addedAt?.toMillis() || Date.now(),
+            data.addedAt
+            ? typeof data.addedAt.toMillis === 'function'
+              ? data.addedAt.toMillis()
+              : typeof data.addedAt === 'number'
+                ? data.addedAt
+                : Date.now()
+            : Date.now(),
             tags: data.tags || [],
           });
         });
@@ -120,5 +128,34 @@ export const useVocabulary = () => {
     }
   }, [currentUser]);
 
-  return { vocabulary, addWord, deleteWord, loading };
+  const updateWord = useCallback(
+    async (updatedEntry: VocabularyEntry) => {
+      const normalizedWord = updatedEntry.word.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '');
+      if (currentUser) {
+        if (normalizedWord !== updatedEntry.id) {
+          // Renaming: create new doc, delete old doc
+          const newDocRef = doc(db, 'users', currentUser.uid, 'vocabulary', normalizedWord);
+          await setDoc(newDocRef, { ...updatedEntry, id: normalizedWord, word: updatedEntry.word.trim(), addedAt: updatedEntry.addedAt || serverTimestamp() });
+          const oldDocRef = doc(db, 'users', currentUser.uid, 'vocabulary', updatedEntry.id);
+          await deleteDoc(oldDocRef);
+        } else {
+          // Update in place
+          const docRef = doc(db, 'users', currentUser.uid, 'vocabulary', updatedEntry.id);
+          await setDoc(docRef, { ...updatedEntry, word: updatedEntry.word.trim(), addedAt: updatedEntry.addedAt || serverTimestamp() });
+        }
+      } else {
+        if (normalizedWord !== updatedEntry.id) {
+          // Renaming: add new entry, remove old
+          const newEntry = { ...updatedEntry, id: normalizedWord, word: updatedEntry.word.trim(), addedAt: Date.now() };
+          setVocabulary(prev => [newEntry, ...prev.filter(entry => entry.id !== updatedEntry.id)]);
+        } else {
+          // Update in place
+          setVocabulary(prev => prev.map(entry => (entry.id === updatedEntry.id ? { ...entry, ...updatedEntry, word: updatedEntry.word.trim() } : entry)));
+        }
+      }
+    },
+    [currentUser]
+  );
+
+  return { vocabulary, addWord, deleteWord,updateWord, loading };
 };

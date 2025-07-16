@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ContentViewerProps {
   content: string;
@@ -21,7 +22,7 @@ export const ContentViewer: React.FC<ContentViewerProps> = ({ content, onWordSel
     <div>
       <h3>Content</h3>
       <div onMouseUp={handleMouseUp} className="content-viewer-text">
-        {content}
+        <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </div>
   );

@@ -123,17 +123,31 @@ export const HomePage: React.FC = () => {
   return (
     <div className="home-container" style={{ display: 'flex', gap: 24 }}>
       {/* 文章列表区 */}
-      <div style={{ minWidth: 220 }}>
+      <div style={{ minWidth: 220,maxWidth: 220 }}>
         <button className="auth-submit-btn" onClick={handleNew} style={{ marginBottom: 12 }}>
           新建 Article
         </button>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {loading ? <li>Loading...</li> : articles.map(article => (
-            <li key={article.id} style={{ marginBottom: 8 }}>
+            <li key={article.id} style={{ marginBottom: 8,
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              whiteSpace: 'nowrap', // prevent text from wrapping
+              overflow: 'hidden', // clip the overflowing content
+              textOverflow: 'ellipsis' // add ellipsis to the overflowed text
+            }}>
               <button
-                className={`auth-submit-btn${selectedId === article.id ? ' selected' : ''}`}
-                style={{ marginRight: 8 }}
+                className={`auth-submit-btn ${selectedId === article.id ? 'selected' : ''}`}
                 onClick={() => handleSelect(article.id)}
+                style={{
+                  flex: 1,
+                  marginRight: 8,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  minWidth: 0 // 关键，允许flex子项收缩
+                }}
               >
                 {article.title}
               </button>
@@ -142,12 +156,12 @@ export const HomePage: React.FC = () => {
                 style={{ background: '#d32f2f', color: 'white' }}
                 onClick={() => handleDelete(article.id)}
               >
-                删除
+                Delete
               </button>
             </li>
           ))}
         </ul>
-        <div style={{ marginTop: 32 }}>
+        <div style={{ marginTop: 32, width: '150px' }}>
           <Link to="/vocabulary" className="auth-submit-btn">管理 Vocabulary</Link>
         </div>
       </div>
@@ -157,7 +171,7 @@ export const HomePage: React.FC = () => {
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
-          placeholder="Article Title"
+          placeholder="Article Title"          
           className="auth-input"
           style={{ marginBottom: 8, width: '100%' }}
         />
@@ -171,32 +185,6 @@ export const HomePage: React.FC = () => {
         <hr className="home-divider" />
       {processedText && <ContentViewer content={processedText} onWordSelect={handleWordSelect} />}
       </div>
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={handleCloseSidebar}
-        isLoading={isLoading}
-        selectedText={selectedText}
-        analysis={currentAnalysis}
-        onAddToVocabulary={handleAddToVocabulary}
-        error={error}
-      />
-    </div>
-  );
-  return (
-    <div className="home-container">
-      <h1>Language Learning Assistant</h1>
-      <div className="home-info-box">
-        <p>You have {vocabulary.length} words in your vocabulary book. <Link to="/vocabulary">Review them here</Link>.</p>
-        {!currentUser && (
-          <p className="home-info-text">
-            Your data is currently stored locally. <Link to="/signup">Sign up</Link> to sync your progress across devices!
-          </p>
-        )}
-      </div>
-      <ContentInput onProcessContent={handleContentSubmit} />
-      <hr className="home-divider" />
-      {processedText && <ContentViewer content={processedText} onWordSelect={handleWordSelect} />}
-
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={handleCloseSidebar}

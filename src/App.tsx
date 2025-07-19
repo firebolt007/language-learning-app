@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { HomePage } from './pages/HomePage';
+import { VideoPage } from './pages/VideoPage';
 import { VocabularyPage } from './pages/VocabularyPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { LoginPage } from './pages/LoginPage';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/vocabulary" element={<VocabularyPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/video" element={<VideoPage />} />
         </Routes>
       </Layout>
       </BrowserRouter>

@@ -27,6 +27,7 @@ export const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-links">
         <Link to="/" className="navbar-link">Home</Link>
+        <Link to="/video" className="navbar-link">Video</Link>
         <Link to="/vocabulary" className="navbar-link">Vocabulary</Link>
         <Link to="/settings" className="navbar-link">Settings</Link>
       </div>
